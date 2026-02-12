@@ -1,0 +1,43 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ffffff;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  height: 60px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Clickable Logo */
+.logo {
+  font-size: 22px;
+  font-weight: 600;
+  color: #000000;
+  text-decoration: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: inline-block;
+}
+
+/* Hover Pop */
+.logo:hover {
+  transform: scale(1.08);
+  color: #333333;
+}
+
+/* Click Animation */
+.logo:active {
+  transform: scale(0.95);
+}
