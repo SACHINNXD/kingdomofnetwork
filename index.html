@@ -10,7 +10,22 @@
 
   <nav class="navbar">
     <a href="index.html" class="logo">Kingdom Of Networks</a>
+
+    <!-- Profile Icon -->
+    <div class="profile-icon" id="profileBtn">
+      &#128100;
+    </div>
   </nav>
+
+  <!-- Popup Modal -->
+  <div class="modal" id="authModal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModal">&times;</span>
+      <h2>Account</h2>
+      <button onclick="window.location.href='register.html'">Register</button>
+      <button onclick="window.location.href='login.html'">Login</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
