@@ -1,6 +1,18 @@
 window.addEventListener("load", function () {
-  setTimeout(function () {
-    document.getElementById("loader").style.display = "none";
-    document.getElementById("main-content").classList.remove("hidden");
-  }, 2000); // 2 seconds
+
+  const loader = document.getElementById("loader");
+  const main = document.getElementById("main-content");
+
+  // Check if loader already shown in this tab
+  if (sessionStorage.getItem("loaderShown")) {
+    loader.style.display = "none";
+    main.classList.remove("hidden");
+  } else {
+    setTimeout(() => {
+      loader.style.display = "none";
+      main.classList.remove("hidden");
+      sessionStorage.setItem("loaderShown", "true");
+    }, 2000);
+  }
+
 });
