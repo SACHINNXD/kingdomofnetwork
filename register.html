@@ -1,29 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Register - Kingdom Of Networks</title>
+  <title>Register</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="auth-body">
 
-  <div class="auth-container">
-    <h2>Register</h2>
+<div class="auth-container">
+  <h2>Register</h2>
 
-    <form>
-      <input type="email" placeholder="Email ID" required>
-      <input type="password" placeholder="Password" required>
-      <input type="password" placeholder="Confirm Password" required>
+  <form id="registerForm">
+    <input type="email" id="regEmail" placeholder="Email ID" required>
+    <input type="password" id="regPass" placeholder="Password" required>
+    <input type="password" id="regConfirm" placeholder="Confirm Password" required>
 
-      <button type="submit" class="primary-btn">Register</button>
-    </form>
+    <button type="submit" class="primary-btn">Register</button>
+  </form>
 
-    <p class="auth-switch">
-      Already registered?
-      <a href="login.html">Login now</a>
-    </p>
+  <p class="auth-switch">
+    Already registered?
+    <a href="login.html">Login now</a>
+  </p>
+</div>
+
+<!-- OTP Modal -->
+<div class="modal" id="otpModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <h3>Verify your Email ID</h3>
+    <div class="otp-boxes">
+      <input maxlength="1"><input maxlength="1"><input maxlength="1">
+      <input maxlength="1"><input maxlength="1"><input maxlength="1">
+    </div>
   </div>
+</div>
 
+<script src="auth.js"></script>
 </body>
 </html>
