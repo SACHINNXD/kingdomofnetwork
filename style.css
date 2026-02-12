@@ -18,6 +18,7 @@ body {
   color: #000;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 
 /* =========================================================
@@ -84,7 +85,7 @@ body {
 .auth-container {
   background: #ffffff;
   padding: 40px;
-  width: 370px;
+  width: 380px;
   border-radius: 16px;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -96,8 +97,6 @@ body {
   font-weight: 600;
   letter-spacing: 0.5px;
 }
-
-/* Form */
 
 .auth-container form {
   display: flex;
@@ -124,7 +123,9 @@ body {
   color: #999;
 }
 
-/* Buttons */
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 .primary-btn {
   padding: 13px;
@@ -147,7 +148,27 @@ body {
   transform: scale(0.97);
 }
 
-/* Switch Link */
+/* Secondary Button (Profile modal) */
+
+.modal-content button {
+  padding: 12px;
+  border: none;
+  background: #000;
+  color: #fff;
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.2s ease;
+}
+
+.modal-content button:hover {
+  background: #333;
+}
+
+/* =========================================================
+   SWITCH LINKS
+========================================================= */
 
 .auth-switch {
   margin-top: 18px;
@@ -193,14 +214,8 @@ body {
 }
 
 @keyframes popIn {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 .close-btn {
@@ -278,6 +293,30 @@ body {
 }
 
 /* =========================================================
+   ERROR MESSAGE BOTTOM
+========================================================= */
+
+#errorMessage {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff4d4d;
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  transition: 0.3s ease;
+  z-index: 2000;
+}
+
+.show-error {
+  opacity: 1 !important;
+}
+
+/* =========================================================
    SHAKE ANIMATION
 ========================================================= */
 
@@ -317,30 +356,21 @@ body {
 }
 
 /* =========================================================
-   EXTRA POLISH (No deletions, only enhancements)
+   UTILITY CLASSES
 ========================================================= */
 
-button {
+.hidden { display: none; }
+.text-center { text-align: center; }
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.bold { font-weight: 600; }
+
+/* =========================================================
+   EXTRA VISUAL POLISH
+========================================================= */
+
+button, input {
   font-family: inherit;
-}
-
-input {
-  font-family: inherit;
-}
-
-.modal-content h3 {
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-.modal-content p {
-  font-size: 14px;
-  margin-top: 10px;
-  color: #555;
-}
-
-.hidden {
-  display: none;
 }
 
 .fade-in {
@@ -350,4 +380,9 @@ input {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+body::selection {
+  background: #000;
+  color: #fff;
 }
