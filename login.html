@@ -3,6 +3,10 @@
 <head>
   <title>Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="auth-body">
@@ -25,16 +29,25 @@
 
 <!-- OTP Modal -->
 <div class="modal" id="otpModal">
-  <div class="modal-content">
+  <div class="modal-content otp-modal">
     <span class="close-btn" onclick="closeModal()">&times;</span>
     <h3>Verify with OTP</h3>
+
     <div class="otp-boxes">
-      <input maxlength="1"><input maxlength="1"><input maxlength="1">
-      <input maxlength="1"><input maxlength="1"><input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
+      <input maxlength="1">
     </div>
   </div>
 </div>
 
+<script>
+  emailjs.init("x3fwiShV3Whum4S2y");
+</script>
 <script src="auth.js"></script>
+
 </body>
 </html>
