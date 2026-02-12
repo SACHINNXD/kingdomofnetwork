@@ -3,6 +3,9 @@ const TEMPLATE_ID = "template_9w6gkcd";
 
 let currentOTP = null;
 let pendingUser = null;
+let loginUserEmail = null;
+let resendTimer = null;
+let resendTimeLeft = 120;
 
 /* ================= USERS STORAGE ================= */
 
@@ -14,6 +17,14 @@ function saveUsers(users) {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
+function setLoggedIn(email) {
+  localStorage.setItem("loggedInUser", email);
+}
+
+function getLoggedInUser() {
+  return localStorage.getItem("loggedInUser");
+}
+
 /* ================= OTP ================= */
 
 function generateOTP() {
@@ -22,10 +33,43 @@ function generateOTP() {
 
 function sendOTP(email) {
   currentOTP = generateOTP();
+
   return emailjs.send(SERVICE_ID, TEMPLATE_ID, {
     to_email: email,
     otp: currentOTP
   });
+}
+
+/* ================= RESEND TIMER ================= */
+
+function startResendTimer(email) {
+  const btn = document.getElementById("resendBtn");
+  resendTimeLeft = 120;
+  btn.disabled = true;
+
+  updateTimerUI(btn);
+
+  resendTimer = setInterval(() => {
+    resendTimeLeft--;
+    updateTimerUI(btn);
+
+    if (resendTimeLeft <= 0) {
+      clearInterval(resendTimer);
+      btn.textContent = "Resend OTP";
+      btn.disabled = false;
+
+      btn.onclick = async () => {
+        await sendOTP(email);
+        startResendTimer(email);
+      };
+    }
+  }, 1000);
+}
+
+function updateTimerUI(btn) {
+  let minutes = String(Math.floor(resendTimeLeft / 60)).padStart(2, "0");
+  let seconds = String(resendTimeLeft % 60).padStart(2, "0");
+  btn.textContent = `Resend OTP (${minutes}:${seconds})`;
 }
 
 /* ================= REGISTER ================= */
@@ -53,13 +97,10 @@ if (registerForm) {
       return;
     }
 
-    try {
-      await sendOTP(email);
-      pendingUser = { email, password: pass };
-      openModal();
-    } catch {
-      alert("Failed to send OTP.");
-    }
+    await sendOTP(email);
+
+    pendingUser = { email, password: pass };
+    openModal(email);
   });
 }
 
@@ -83,12 +124,9 @@ if (loginForm) {
       return;
     }
 
-    try {
-      await sendOTP(email);
-      openModal();
-    } catch {
-      alert("Failed to send OTP.");
-    }
+    await sendOTP(email);
+    loginUserEmail = email;
+    openModal(email);
   });
 }
 
@@ -99,7 +137,7 @@ function setupOTPInputs() {
 
   inputs.forEach((input, index) => {
     input.value = "";
-    input.style.borderColor = "#ccc";
+    input.classList.remove("error");
 
     input.addEventListener("input", () => {
       if (!/^[0-9]$/.test(input.value)) {
@@ -115,10 +153,8 @@ function setupOTPInputs() {
     });
 
     input.addEventListener("keydown", (e) => {
-      if (e.key === "Backspace") {
-        if (!input.value && index > 0) {
-          inputs[index - 1].focus();
-        }
+      if (e.key === "Backspace" && !input.value && index > 0) {
+        inputs[index - 1].focus();
       }
     });
   });
@@ -133,21 +169,27 @@ function checkOTP() {
   inputs.forEach(i => entered += i.value);
 
   if (entered.length === 6) {
+
     if (entered === currentOTP) {
 
       if (pendingUser) {
         let users = getUsers();
         users.push(pendingUser);
         saveUsers(users);
+        setLoggedIn(pendingUser.email);
         pendingUser = null;
       }
 
-      alert("OTP Verified Successfully");
-      closeModal();
+      if (loginUserEmail) {
+        setLoggedIn(loginUserEmail);
+        loginUserEmail = null;
+      }
+
+      window.location.href = "index.html";
 
     } else {
       inputs.forEach(i => {
-        i.style.borderColor = "red";
+        i.classList.add("error");
         shakeField(i);
       });
     }
@@ -161,9 +203,10 @@ function shakeField(field) {
   setTimeout(() => field.classList.remove("shake"), 300);
 }
 
-function openModal() {
+function openModal(email) {
   document.getElementById("otpModal").style.display = "flex";
   setupOTPInputs();
+  startResendTimer(email);
 }
 
 function closeModal() {
