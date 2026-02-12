@@ -3,10 +3,7 @@
 <head>
   <title>Register</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="auth-body">
@@ -18,7 +15,6 @@
     <input type="email" id="regEmail" placeholder="Email ID" required>
     <input type="password" id="regPass" placeholder="Password" required>
     <input type="password" id="regConfirm" placeholder="Confirm Password" required>
-
     <button type="submit" class="primary-btn">Register</button>
   </form>
 
@@ -35,13 +31,13 @@
     <h3>Verify your Email ID</h3>
 
     <div class="otp-boxes">
-      <input maxlength="1">
-      <input maxlength="1">
-      <input maxlength="1">
-      <input maxlength="1">
-      <input maxlength="1">
-      <input maxlength="1">
+      <input maxlength="1"><input maxlength="1"><input maxlength="1">
+      <input maxlength="1"><input maxlength="1"><input maxlength="1">
     </div>
+
+    <p class="resend-section">
+      <button id="resendBtn" disabled>Resend OTP (02:00)</button>
+    </p>
   </div>
 </div>
 
