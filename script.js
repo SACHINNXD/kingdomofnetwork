@@ -1,12 +1,12 @@
 const profileBtn = document.getElementById("profileBtn");
-const modal = document.getElementById("authModal");
-const closeModal = document.getElementById("closeModal");
+const modal = document.getElementById("accountModal");
+const closeAccount = document.getElementById("closeAccount");
 
 profileBtn.addEventListener("click", () => {
   modal.style.display = "flex";
 });
 
-closeModal.addEventListener("click", () => {
+closeAccount.addEventListener("click", () => {
   modal.style.display = "none";
 });
 
