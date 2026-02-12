@@ -7,7 +7,7 @@ let loginUserEmail = null;
 let resendTimer = null;
 let resendTimeLeft = 120;
 
-/* ================= USERS STORAGE ================= */
+/* ================= USERS ================= */
 
 function getUsers() {
   return JSON.parse(localStorage.getItem("users")) || [];
@@ -17,12 +17,29 @@ function saveUsers(users) {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
+/* ================= SESSION ================= */
+
 function setLoggedIn(email) {
   localStorage.setItem("loggedInUser", email);
 }
 
-function getLoggedInUser() {
-  return localStorage.getItem("loggedInUser");
+/* ================= ERROR MESSAGE ================= */
+
+function showError(message) {
+  let errorBox = document.getElementById("errorMessage");
+
+  if (!errorBox) {
+    errorBox = document.createElement("div");
+    errorBox.id = "errorMessage";
+    document.body.appendChild(errorBox);
+  }
+
+  errorBox.textContent = message;
+  errorBox.classList.add("show-error");
+
+  setTimeout(() => {
+    errorBox.classList.remove("show-error");
+  }, 3000);
 }
 
 /* ================= OTP ================= */
@@ -40,38 +57,6 @@ function sendOTP(email) {
   });
 }
 
-/* ================= RESEND TIMER ================= */
-
-function startResendTimer(email) {
-  const btn = document.getElementById("resendBtn");
-  resendTimeLeft = 120;
-  btn.disabled = true;
-
-  updateTimerUI(btn);
-
-  resendTimer = setInterval(() => {
-    resendTimeLeft--;
-    updateTimerUI(btn);
-
-    if (resendTimeLeft <= 0) {
-      clearInterval(resendTimer);
-      btn.textContent = "Resend OTP";
-      btn.disabled = false;
-
-      btn.onclick = async () => {
-        await sendOTP(email);
-        startResendTimer(email);
-      };
-    }
-  }, 1000);
-}
-
-function updateTimerUI(btn) {
-  let minutes = String(Math.floor(resendTimeLeft / 60)).padStart(2, "0");
-  let seconds = String(resendTimeLeft % 60).padStart(2, "0");
-  btn.textContent = `Resend OTP (${minutes}:${seconds})`;
-}
-
 /* ================= REGISTER ================= */
 
 const registerForm = document.getElementById("registerForm");
@@ -87,6 +72,7 @@ if (registerForm) {
     if (pass !== confirm) {
       shakeField(regPass);
       shakeField(regConfirm);
+      showError("Passwords not matching");
       return;
     }
 
@@ -94,6 +80,7 @@ if (registerForm) {
 
     if (users.some(u => u.email === email)) {
       shakeField(regEmail);
+      showError("Email already in use");
       return;
     }
 
@@ -116,21 +103,30 @@ if (loginForm) {
     const pass = loginPass.value;
 
     const users = getUsers();
-    const valid = users.find(u => u.email === email && u.password === pass);
+    const user = users.find(u => u.email === email);
 
-    if (!valid) {
+    if (!user) {
       shakeField(loginEmail);
       shakeField(loginPass);
+      showError("Email not registered");
+      return;
+    }
+
+    if (user.password !== pass) {
+      shakeField(loginEmail);
+      shakeField(loginPass);
+      showError("Invalid password");
       return;
     }
 
     await sendOTP(email);
+
     loginUserEmail = email;
     openModal(email);
   });
 }
 
-/* ================= OTP INPUT LOGIC ================= */
+/* ================= OTP INPUT ================= */
 
 function setupOTPInputs() {
   const inputs = document.querySelectorAll(".otp-boxes input");
@@ -192,11 +188,45 @@ function checkOTP() {
         i.classList.add("error");
         shakeField(i);
       });
+      showError("Invalid OTP");
     }
   }
 }
 
-/* ================= UI HELPERS ================= */
+/* ================= RESEND TIMER ================= */
+
+function startResendTimer(email) {
+  const btn = document.getElementById("resendBtn");
+
+  resendTimeLeft = 120;
+  btn.disabled = true;
+
+  updateTimer(btn);
+
+  resendTimer = setInterval(() => {
+    resendTimeLeft--;
+    updateTimer(btn);
+
+    if (resendTimeLeft <= 0) {
+      clearInterval(resendTimer);
+      btn.textContent = "Resend OTP";
+      btn.disabled = false;
+
+      btn.onclick = async () => {
+        await sendOTP(email);
+        startResendTimer(email);
+      };
+    }
+  }, 1000);
+}
+
+function updateTimer(btn) {
+  let m = String(Math.floor(resendTimeLeft / 60)).padStart(2, "0");
+  let s = String(resendTimeLeft % 60).padStart(2, "0");
+  btn.textContent = `Resend OTP (${m}:${s})`;
+}
+
+/* ================= UI ================= */
 
 function shakeField(field) {
   field.classList.add("shake");
