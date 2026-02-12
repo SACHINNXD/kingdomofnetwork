@@ -8,7 +8,7 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* ================= LOADER ================= */
+/* ===== LOADER ===== */
 
 #loader {
   position: fixed;
@@ -52,7 +52,7 @@ body {
   font-weight: 500;
 }
 
-/* ================= MAIN SITE ================= */
+/* ===== MAIN SITE ===== */
 
 .hidden {
   display: none;
@@ -62,7 +62,6 @@ body {
   height: 60px;
   background: #ffffff;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 0 20px;
   border-bottom: 1px solid #e0e0e0;
@@ -71,17 +70,11 @@ body {
 .logo {
   font-size: 22px;
   font-weight: 600;
-  color: #000;
+  color: #000000;
   text-decoration: none;
   transition: transform 0.2s ease;
 }
 
 .logo:hover {
   transform: scale(1.08);
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #000;
-  margin-left: 15px;
 }
